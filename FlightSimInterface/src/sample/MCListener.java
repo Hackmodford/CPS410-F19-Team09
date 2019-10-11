@@ -1,7 +1,6 @@
 package sample;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
+import sun.applet.Main;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -10,14 +9,18 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Observable;
+import java.util.Observer;
 
 public class MCListener extends Thread {
 
         private DatagramSocket socket;
         private boolean running;
         private byte[] buf = new byte[256];
+        private MainModel model;
 
-        public MCListener() {
+        public MCListener(MainModel model) {
+            this.model = model;
             try {
                 socket = new DatagramSocket(8888);
             } catch (SocketException e){
@@ -28,7 +31,6 @@ public class MCListener extends Thread {
 
         public void run() {
             running = true;
-
             while (running) {
                 DatagramPacket packet
                         = new DatagramPacket(buf, buf.length);

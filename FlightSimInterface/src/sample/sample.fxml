@@ -11,9 +11,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 
-<GridPane alignment="CENTER" hgap="10.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="0.0" prefWidth="18.0" style="-fx-pref-height: 500; -fx-pref-width: 800;" vgap="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="sample.Controller">
+<GridPane alignment="CENTER" hgap="10.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="0.0" prefWidth="18.0"
+          style="-fx-pref-height: 500; -fx-pref-width: 800;" vgap="10" xmlns:fx="http://javafx.com/fxml/1"
+          xmlns="http://javafx.com/javafx/8" fx:controller="sample.MainView">
    <children>
-       <Button fx:id="btnStart" onMouseClicked="#startSim" style="-fx-pref-height: 20; -fx-pref-width: 80;" text="Stop" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+       <Button fx:id="btnStart" onMouseClicked="#startSim" style="-fx-pref-height: 20; -fx-pref-width: 80;"
+               text="Stop" GridPane.columnIndex="1" GridPane.rowIndex="7" />
        <Button fx:id="btnStop" onMouseClicked="#endSim" prefHeight="27.0" prefWidth="85.0" style="-fx-pref-height: 20; -fx-pref-width: 80;" text="Config" GridPane.rowIndex="4" />
        <Button fx:id="btnConfig" onMouseClicked="#beginEditConfig" prefHeight="20.0" prefWidth="129.0" style="-fx-pref-width: 80;" text="Start" GridPane.rowIndex="7" />
       <Label GridPane.columnIndex="1" GridPane.rowIndex="3" />
