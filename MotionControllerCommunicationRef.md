@@ -22,7 +22,7 @@ The first byte will always be the command byte.
 ### Parameter Descriptions
 | Name | Details         | Datatype |
 |------|-----------------| -------- |
-| Channel | The channel of the DAC. </br>0 = Pitch</br>1=Roll</br>2 = Unknown</br>3 = Unknown</br>4 = All | byte |
+| Channel | The channel of the DAC. </br>0 = Pitch</br>1 = Roll</br>2 = TBD</br>3 = TBD</br>4 = All | byte |
 | Coarse Gain | Low (0), Med (1), High (2) | byte |
 | Fine Gain | [-32, 31] | 2's complement byte |
 | Offset | DAC Offset | 2's complement byte |
