@@ -2,7 +2,7 @@ package sample;
 
 public abstract class CustomObserver {
 
-    private MCListener mcListener;
+    private ControllerChannel controllerChannel;
     public abstract void update();
 
 }
