@@ -12,7 +12,7 @@ The first byte will always be the command byte.
 | Emergency Stop   | 1           | '0'     | N/A                                          | Flight Sim comes to a complete halt. |
 | Start            | 1           | 'S'     | N/A                                          | Raises machine in air, then accepts setpoint commands to move the simulator. |
 | Stop             | 1           | 'E'     | N/A                                          | Gently moves simulator to neutral position and lowers to ground. |
-| Change Setpoints | 5           | 'M'     | 8-bit unsigned integer for pitch</br>8-bit unsigned integer for roll | |
+| Change Setpoints | 5           | 'M'     | 4 byte unsigned integer for pitch</br>4 byte unsigned integer for roll | |
 | Set Pitch PID    | 24          | '1'     | 8-byte double for P</br> 8-byte double for I</br> 8-byte double for D | |
 | Set Roll PID     | 24          | '2'     | 8-byte double for P</br> 8-byte double for I</br> 8-byte double for D  | |
 | Set DAC Coarse Gain  | 3 | 'G' | 1 byte for "Channel"</br>1 byte for "Coarse Gain" | |
