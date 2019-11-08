@@ -29,6 +29,11 @@ public class Constants {
     public static final char PITCH = '1'; //3 doubles (P, I, D)
     public static final char ROLL = '2'; //3 doubles (P, I, D)
 
+    public static final char DAC_CG = 'G';
+    public static final char DAC_FG = 'g';
+    public static final char DAC_OFFSET = 'O';
+
+
 
 
 
