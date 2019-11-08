@@ -2,7 +2,7 @@ package sample;
 
 public abstract class CustomObserver {
 
-    private ControllerChannel controllerChannel;
+    private MotionControllerChannel controllerChannel;
     public abstract void update();
 
 }
