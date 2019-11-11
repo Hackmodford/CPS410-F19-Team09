@@ -9,6 +9,9 @@ import javafx.scene.control.*;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+
 public class MainViewController extends Application {
 
     /*
@@ -122,16 +125,16 @@ public class MainViewController extends Application {
 
     private boolean inputIsValidFor(TextField tf){
 
-        int value;
+        double value;
         try {
-            value = Integer.parseInt(tf.getText());
+            value = Double.parseDouble(tf.getText());
         } catch (Exception e){
             return false;
         }
         if (command == Constants.ROLL || command == Constants.PITCH) {
-            return value > 0;
+            return value >= 0.0;
         } else if (command == Constants.MOVE) {
-            return value <= 255 && value >= 0;
+            return value <= 360 && value >= 0;
         } else if (command == Constants.DAC_OFFSET
                 || command == Constants.DAC_CG
                 || command == Constants.DAC_FG){
@@ -144,18 +147,34 @@ public class MainViewController extends Application {
     //Size of command is 4 bytes
     private double[] buildPidCmd(){
         double[] d =  new double[]{
-                Integer.parseInt(field1.getText()),
-                Integer.parseInt(field2.getText()),
-                Integer.parseInt(field3.getText())};
-        System.out.println(String.format("P: %s, I: %s, D: %s", (int)d[0], (int)d[1], (int)d[2]));
+                Double.parseDouble(field1.getText()),
+                Double.parseDouble(field2.getText()),
+                Double.parseDouble(field3.getText())};
+        System.out.println(String.format("P: %s, I: %s, D: %s", d[0], d[1], d[2]));
         return d;
     }
 
     private byte[] buildSetPointsCmd(){
-        return new byte[]{(byte) command,
-                0, (byte)(Integer.parseInt(field1.getText()) & 0xff),
-                0, (byte)(Integer.parseInt(field2.getText()) & 0xff)};
+        int pitchDegree = Integer.parseInt(field1.getText());
+        int rollDegree = Integer.parseInt(field2.getText());
+        long pitchMappedVal = Utils.map(pitchDegree, 0, 360, 0, 4294967295L);
+        long rollMappedVal = Utils.map(rollDegree, 0, 360, 0, 4294967295L);
 
+        byte[] bytes = new byte[9];
+        bytes[0] = (byte)command;
+        byte[] a1 =
+                ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(pitchMappedVal).array();
+        byte[] a2 =
+                ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(rollMappedVal).array();
+        System.arraycopy(a1, 0, bytes, 1, 4);
+        System.arraycopy(a2, 0, bytes, 5, 4);
+//        for (int i = 0; i < a1.length; i++){
+//            bytes[i+1] = a1[i];
+//        }
+//        for (int i = 0; i < a2.length; i++){
+//            bytes[i+1+a1.length] = a2[i];
+//        }
+        return bytes;
     }
 
     private byte[] buildDacCmd(){

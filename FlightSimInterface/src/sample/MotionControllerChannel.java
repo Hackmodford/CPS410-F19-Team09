@@ -21,7 +21,6 @@ public class MotionControllerChannel extends Thread {
     private DataChannel controller;
     private CustomObserver observer;
     private double[] displayValues;
-    private DatagramPacket packet;
 
 //    private int pSet, pVal, rSet, rVal, pitchPwm, rollPwm, state;
 //    private double kpPitch, kiPitch, kdPitch, kpRoll, kiRoll, kdRoll;
@@ -43,7 +42,7 @@ public class MotionControllerChannel extends Thread {
     public void run() {
         running = true;
         while (running) {
-            this.packet = new DatagramPacket(buf, buf.length);
+            DatagramPacket packet = new DatagramPacket(buf, buf.length);
             try {
                 socket.receive(packet);
             } catch (IOException e) {
@@ -131,28 +130,36 @@ public class MotionControllerChannel extends Thread {
     }
 
     public void sendCommand(byte[] cmdVals) {
-        if (packet == null || socket == null) {
-            controller.relayErrorToView("Can't connect to controller.");
-            return;
-        }
-        if (!socket.isConnected()){
-            controller.relayErrorToView("Can't connect to controller.");
-            return;
-        }
-        packet.setData(cmdVals);
+//        if (socket == null) {
+//            controller.relayErrorToView("Can't connect to controller.");
+//            return;
+//        }
+//        if (!socket.isConnected()){
+//            controller.relayErrorToView("Can't connect to controller.");
+//            return;
+//        }
         try {
+            InetAddress address = InetAddress.getByName("192.168.1.6");
+            DatagramPacket packet = new DatagramPacket(cmdVals, cmdVals.length, address, 8888);
             socket.send(packet);
-        } catch (Exception e){ e.printStackTrace(); }
+        } catch (Exception e){
+            e.printStackTrace();
+            return;
+        }
         controller.relaySuccessToView();
     }
 
     private byte[] convertDoubleToByteArray(double d) {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        DataOutputStream dos = new DataOutputStream(bos);
-        try {
-            dos.writeDouble(d);
-            dos.flush(); } catch (IOException e) { e.printStackTrace(); }
-        return bos.toByteArray();
+        ByteBuffer byteBuffer = ByteBuffer.allocate(Double.BYTES);
+        byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+        byteBuffer.putDouble(d);
+        return byteBuffer.array();
+//        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//        DataOutputStream dos = new DataOutputStream(bos);
+//        try {
+//            dos.writeDouble(d);
+//            dos.flush(); } catch (IOException e) { e.printStackTrace(); }
+//        return bos.toByteArray();
     }
 
     private byte[] writeToByteArray(char cmd, double[] cmdVals){
@@ -160,7 +167,7 @@ public class MotionControllerChannel extends Thread {
         array[0] = (byte)cmd;
         for (int i = 0; i < cmdVals.length; i++){
             byte[] bytes = convertDoubleToByteArray(cmdVals[i]);
-            for (int j = 0; j < bytes.length-1; j++){
+            for (int j = 0; j < bytes.length; j++){
                 array[i*8 + j + 1] = bytes[j];
             }
         }

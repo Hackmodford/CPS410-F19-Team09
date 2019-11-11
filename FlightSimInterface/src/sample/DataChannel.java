@@ -9,6 +9,7 @@ public class DataChannel extends CustomObserver {
     public DataChannel(MainViewController view){
         mcChannel = new MotionControllerChannel(this);
         mcChannel.setObserver(this);
+        mcChannel.start();
         this.view = view;
     }
 
