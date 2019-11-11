@@ -21,6 +21,14 @@ public class Constants {
     //signed char
 
 
+    //states
+    public static final byte STATE_STOPPED = 0;
+    public static final byte STATE_STARTING = 1;
+    public static final byte STATE_RUNNING = 2;
+    public static final byte STATE_ENDING = 3;
+    public static final byte STATE_EMERGENCY_STOP = 99;
+    public static final byte STATE_MANUAL = 4;
+
     //commands
     public static final char START = 'S';
     public static final char END = 'E';
