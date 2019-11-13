@@ -83,32 +83,34 @@ public class MotionControllerChannel extends Thread {
 //2-3 Pitch Value
 //4-5 Roll Setpoint
 //6-7 Roll Value
-//8 Pitch PWM
-//9 Roll PWM
-//10 State
-//11 kP Pitch
-//19 kI Pitch
-//27 kD Pitch
-//35 kP Roll
-//43 kI Roll
-//51 kD Roll
+//8-9 Pitch PWM
+//10-11 Roll PWM
+//12 State
+//13 kP Pitch
+//21 kI Pitch
+//29 kD Pitch
+//37 kP Roll
+//45 kI Roll
+//53 kD Roll
 
 
     public void setDisplayValues(byte[] data){
+        if (data == null) {
+            return;
+        }
         this.displayValues = new double[] {
-                getShort(data, 0),
-                getShort(data, 2),
-                getShort(data, 4),
-                getShort(data, 6),
-                getByte(data, 8),
-                getByte(data, 9),
-                getByte(data, 10),
-                getDouble(data, 11),
-                getDouble(data, 19),
-                getDouble(data, 27),
-                getDouble(data, 35),
-                getDouble(data, 43),
-                getDouble(data, 51)
+                Utils.map((long)getShort(data, 0),0, 12600L,0, 360),
+                Utils.map((long)getShort(data, 2), 0, 12600L,0, 360),
+                Utils.map((long)getShort(data, 4),0, 8640L,0, 360),
+                Utils.map((long)getShort(data, 6), 0, 8640L,0, 360),
+                getShort(data, 8),
+                getShort(data, 10),
+                getByte(data, 12),
+                getDouble(data, 21),
+                getDouble(data, 29),
+                getDouble(data, 37),
+                getDouble(data, 45),
+                getDouble(data, 53)
         };
     }
 
@@ -192,7 +194,7 @@ public class MotionControllerChannel extends Thread {
 //    }
 
     private double getByte(byte[] data, int offset) {
-        return (double) ByteBuffer.wrap(data, offset, 1).order(ByteOrder.LITTLE_ENDIAN).getShort();
+        return (double) (ByteBuffer.wrap(data, offset, 2).order(ByteOrder.LITTLE_ENDIAN).getShort() & 0xff);
     }
 
     private double getShort(byte[] data, int offset) {

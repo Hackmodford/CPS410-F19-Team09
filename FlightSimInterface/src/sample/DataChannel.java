@@ -4,18 +4,18 @@ package sample;
 public class DataChannel extends CustomObserver {
 
     private MotionControllerChannel mcChannel;
-    private MainViewController view;
+    private MainViewController viewController;
 
-    public DataChannel(MainViewController view){
+    public DataChannel(MainViewController viewController){
         mcChannel = new MotionControllerChannel(this);
         mcChannel.setObserver(this);
+        this.viewController = viewController;
         mcChannel.start();
-        this.view = view;
     }
 
     @Override
     public void update() {
-        view.updateValues(mcChannel.getDisplayValues());
+        viewController.updateValues(mcChannel.getDisplayValues());
     }
 
     public void sendCommand(double[] values, char cmd){
@@ -31,11 +31,11 @@ public class DataChannel extends CustomObserver {
     }
 
     public void relayErrorToView(String s){
-        view.showError(s);
+        viewController.showError(s);
     }
 
     public void relaySuccessToView(){
-        view.showCommandSentMessage();
+        viewController.showCommandSentMessage();
     }
 
 }
