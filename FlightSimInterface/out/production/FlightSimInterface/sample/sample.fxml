@@ -12,7 +12,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 
-<SplitPane dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainViewController">
+<SplitPane dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainView">
    <items>
       <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="400.0">
          <children>
@@ -53,7 +53,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="statusLabel" text="Ready" textFill="WHITE" GridPane.columnIndex="1">
+                        <Label fx:id="statusLabel" text="&lt;~&gt;" textFill="WHITE" GridPane.columnIndex="1">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -109,7 +109,7 @@
                       <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="250.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ImageView fitHeight="450.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <ImageView fx:id="imgDialPitch" fitHeight="450.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <image>
                               <Image url="@../assets/360dial.png" />
                            </image>
@@ -135,7 +135,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label text="0" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+                        <Label fx:id="txtSetPointPitch" text="0" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="LEFT">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -156,7 +156,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label text="0" textFill="WHITE" GridPane.columnIndex="1">
+                        <Label fx:id="txtVoltagePitch" text="0" textFill="WHITE" GridPane.columnIndex="1">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -184,7 +184,7 @@
                       <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="250.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ImageView fitHeight="450.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <ImageView fx:id="imgDialRoll" fitHeight="450.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <image>
                               <Image url="@../assets/360dial.png" />
                            </image>
@@ -205,12 +205,12 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" text="Pitch Set-pt (º):" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="CENTER">
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="Roll Set-pt (º):" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="CENTER">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label text="0" textFill="WHITE" GridPane.columnIndex="1">
+                        <Label fx:id="txtSetPointRoll" text="0" textFill="WHITE" GridPane.columnIndex="1">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -226,12 +226,12 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" text="Volatage (V):" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="CENTER">
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="Voltage (V):" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="CENTER">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label text="0" textFill="WHITE" GridPane.columnIndex="1">
+                        <Label fx:id="txtVoltageRoll" text="0" textFill="WHITE" GridPane.columnIndex="1">
                            <font>
                               <Font size="18.0" />
                            </font>

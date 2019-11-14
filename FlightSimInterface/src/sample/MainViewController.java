@@ -2,13 +2,15 @@ package sample;
 
 import com.sun.tools.internal.jxc.ap.Const;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
-
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -42,32 +44,39 @@ public class MainViewController extends Application {
 
      */
 
+    @FXML public TextField field1;
+    @FXML public TextField field2;
+    @FXML public TextField field3;
+
+    @FXML public MenuItem cmdSetPitchPid;
+    @FXML public MenuItem cmdSetRollPid;
+    @FXML public MenuItem cmdSetPoints;
+    @FXML public MenuItem cmdDacCourseGain;
+    @FXML public MenuItem cmdDacFineGain;
+    @FXML public MenuItem cmdDacOffset;
+
+    @FXML public MenuButton commandMenu;
+
+    @FXML public Button btnSubmit;
+    @FXML public Button btnStart;
+
+    @FXML public Label errorLabel;
+    @FXML public Label statusLabel;
+    @FXML public Label txtSetPointPitch;
+    @FXML public Label txtSetPointRoll;
+    @FXML public Label txtVoltagePitch;
+    @FXML public Label txtVoltageRoll;
+
+    @FXML public ImageView imgDialPitch;
+    @FXML public ImageView imgDialRoll;
+
+    private TextField[] fields;
+
     private DataChannel channel;
     private MainModel model;
 
     private char command;
 
-    public TextField field1;
-    public TextField field2;
-    public TextField field3;
-
-    private TextField[] fields;
-
-    public MenuItem cmdSetPitchPid;
-    public MenuItem cmdSetRollPid;
-    public MenuItem cmdSetPoints;
-    public MenuItem cmdDacCourseGain;
-    public MenuItem cmdDacFineGain;
-    public MenuItem cmdDacOffset;
-
-    private int[] pidVals = new int[3];
-
-    public MenuButton commandMenu;
-
-    public Button btnSubmit;
-    public Button btnStart;
-
-    public Label errorLabel;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -76,26 +85,91 @@ public class MainViewController extends Application {
         primaryStage.show();
     }
 
+    @FXML
+    public void initialize(){
+        initElementsIfNeeded();
+    }
+
+    @Override
+    public void init() throws Exception {
+        super.init();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+    }
+
     public void initElementsIfNeeded(){
         if (channel == null) channel = new DataChannel(this);
         if (model == null) model = new MainModel();
         if (fields == null) fields = new TextField[]{field1, field2, field3};
     }
 
+    //byte legend
+//0 Pitch Setpoint
+//1 Pitch Value
+//2 Roll Setpoint
+//3 Roll Value
+//4 Pitch PWM
+//5 Roll PWM
+//6 State
+//7 kP Pitch
+//8 kI Pitch
+//9 kD Pitch
+//10 kP Roll
+//11 kI Roll
+//12 kD Roll
     public void updateValues(double[] values){
+        Double pSetPoint =  values[0],
+                pValue =  values[1],
+                rSetPoint = values[2],
+                rValue = values[3],
+                pPwm = values[4],
+                rPwm = values[5],
+                state = values[6],
+                kpPitch = values[7],
+                kiPitch = values[8],
+                kdPitch = values[9],
+                kpRoll = values[10],
+                kiRoll = values[11],
+                kdRoll = values[11];
 
+        Platform.runLater(() -> {
+
+            //update set-points
+            txtSetPointPitch.setText(pSetPoint.toString());
+            txtSetPointRoll.setText(rSetPoint.toString());
+
+            //update dials
+            imgDialPitch.setRotate(pValue);
+            imgDialRoll.setRotate(rValue);
+
+            //update state of simulator
+            switch (state.intValue()){
+                case 0:
+                    statusLabel.setText("Stopped");
+                    break;
+                case 1:
+                    statusLabel.setText("Starting");
+                    break;
+                case 2:
+                    statusLabel.setText("Running");
+                    break;
+                case 3:
+                    statusLabel.setText("Ending");
+                    break;
+                case 4:
+                    statusLabel.setText("Manual");
+                    break;
+                case 99:
+                    statusLabel.setText("Emergency Stop");
+                    break;
+            }
+        });
     }
 
     public void sendCommand(){
-
-        initElementsIfNeeded();
-
-        if (command == Constants.START
-                || command == Constants.END
-                || command == Constants.EMERGENCY_STOP){
-            channel.sendCommand(command);
-            return;
-        }
 
         //validate input for all visible text fields based on the current command
         if (inputsInvalid()) return;
@@ -220,20 +294,17 @@ public class MainViewController extends Application {
 
     // 'S'
     public void startSim(){
-        command = Constants.START;
-        sendCommand();
+        channel.sendCommand(Constants.START);
     }
 
     // 'E'
     public void endSim(){
-        command = Constants.END;
-        sendCommand();
+        channel.sendCommand(Constants.END);
     }
 
     // '0'
     public void emergencyStop(){
-        command = Constants.EMERGENCY_STOP;
-        sendCommand();
+        channel.sendCommand(Constants.EMERGENCY_STOP);
     }
 
     public void setCmdRoll(){
