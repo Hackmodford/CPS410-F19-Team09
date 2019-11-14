@@ -236,12 +236,13 @@ public class MainViewController extends Application {
 
         byte[] bytes = new byte[9];
         bytes[0] = (byte)command;
+        //Not using Little Endian in order to mimic behavior of SimTools.
         byte[] a1 =
-                ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(pitchMappedVal).array();
+                ByteBuffer.allocate(8).putLong(pitchMappedVal).array();
         byte[] a2 =
-                ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(rollMappedVal).array();
-        System.arraycopy(a1, 0, bytes, 1, 4);
-        System.arraycopy(a2, 0, bytes, 5, 4);
+                ByteBuffer.allocate(8).putLong(rollMappedVal).array();
+        System.arraycopy(a1, 4, bytes, 1, 4);
+        System.arraycopy(a2, 4, bytes, 5, 4);
 //        for (int i = 0; i < a1.length; i++){
 //            bytes[i+1] = a1[i];
 //        }
