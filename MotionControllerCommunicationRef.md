@@ -1,7 +1,7 @@
 # Arduino Commands
 Commands are sent as a byte array via UDP.
 
-Arduino listens on IP 192.168.1.5 port 8888.
+The Arduino listens on IP 192.168.1.5 port 8888.
 
 The first byte will always be the command byte.
 
@@ -31,7 +31,7 @@ All commands are little-endian unless specified otherwise.
 
 # Arduino State Output
 
-The arduino reports state information multiple times per second via UDP. The format of the byte array is specified below. The report is little-endian.
+The arduino reports state information multiple times per second via UDP. It broadcasts to IP 192.168.1.6 with port 8888. The format of the byte array is specified below. The report is little-endian.
 
 | Index | Size (byte) | Format  | Description                                             |
 | ----- | ----------- | ------- | ------------------------------------------------------- |
