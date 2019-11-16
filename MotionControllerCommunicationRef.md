@@ -64,7 +64,7 @@ The arduino reports state information multiple times per second via UDP. It broa
 
 ## I/O Chart
 The arduino reports all input states in a single byte and all outputs in a single byte.
-The bit index is used to represent the state of the I/O. Indexes starting with LSB.
+Specific bits within the byte are used to represent the state of the I/O. Indexes starting with LSB.
 
 Input Chart
 
