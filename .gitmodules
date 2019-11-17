@@ -1,3 +1,3 @@
-[submodule "ArduinoMotionController"]
-	path = ArduinoMotionController
+[submodule "CPS410-F19-FSMotionController"]
+	path = CPS410-F19-FSMotionController
 	url = https://github.com/Hackmodford/CPS410-F19-FSMotionController.git
