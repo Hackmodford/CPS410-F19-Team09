@@ -23,3 +23,6 @@ Nick Bravata | NBravo04
 * GUI to manually control/monitor Arduino
 * Elite Dangerous
 * VR Support
+
+## Arduino Shield Schematic
+![Arduino Shield Schematic](https://github.com/Hackmodford/CPS410-F19-Team09/blob/master/arduinoShieldSchematic.png)
