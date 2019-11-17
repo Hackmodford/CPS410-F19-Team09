@@ -1,11 +1,5 @@
 # Arduino Commands
-Commands are sent as a byte array via UDP.
-
-The Arduino listens on IP 192.168.1.5 port 8888.
-
-The first byte will always be the command byte.
-
-All commands are little-endian unless specified otherwise.
+Commands are sent as a byte array via UDP. The Arduino listens on IP 192.168.1.5 port 8888. The first byte will always be the command byte. All commands are little-endian unless specified otherwise.
 
 ### Commands
 
