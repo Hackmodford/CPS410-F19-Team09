@@ -35,10 +35,10 @@ The arduino reports state information multiple times per second via UDP. It broa
 
 | Index | Size (byte) | Format  | Description                                             |
 | ----- | ----------- | ------- | ------------------------------------------------------- |
-| 0     | 2           | integer | The pitch setpoint. Min value is 0. Max value is 12600  |
-| 2     | 2           | integer | The pitch position. Min value is 0. Max value is 12600  |
-| 4     | 2           | integer | The roll setpoint. Min value is 0. Max value is 8640    |
-| 6     | 2           | integer | The roll position. Min value is 0. Max value is 8640    |
+| 0     | 2           | integer | The pitch setpoint. [0, 12600]  |
+| 2     | 2           | integer | The pitch position. [0, 12600]  |
+| 4     | 2           | integer | The roll setpoint. [0, 8640]    |
+| 6     | 2           | integer | The roll position. [0, 8640]     |
 | 8     | 2           | integer | The pitch voltage. Min Int value represents -10V. Max Int value represents +10V |
 | 10    | 2           | integer | The roll voltage. Min Int value represents -10V. Max Int value represents +10V |
 | 12    | 1           | byte    | The current state of the Arduino. (See state chart) |
