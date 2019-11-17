@@ -1,7 +1,8 @@
-package sample;
+package data;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
+import util.CustomObserver;
+import util.Utils;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -9,7 +10,6 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.ArrayList;
 
 public class MotionControllerChannel extends Thread {
 
@@ -17,13 +17,9 @@ public class MotionControllerChannel extends Thread {
     private boolean running;
     private byte[] buf = new byte[256];
     private byte[] data;
-    private ArrayList<Byte> sendableData;
     private DataChannel controller;
     private CustomObserver observer;
     private double[] displayValues;
-
-//    private int pSet, pVal, rSet, rVal, pitchPwm, rollPwm, state;
-//    private double kpPitch, kiPitch, kdPitch, kpRoll, kiRoll, kdRoll;
 
     public MotionControllerChannel(DataChannel controller) {
         this.controller = controller;
@@ -33,11 +29,6 @@ public class MotionControllerChannel extends Thread {
             e.printStackTrace();
         }
     }
-
-    public void sendUpdatedValues(double[] values){
-
-    }
-
 
     public void run() {
         running = true;
@@ -56,23 +47,7 @@ public class MotionControllerChannel extends Thread {
             data = packet.getData();
             setDisplayValues(data);
 
-            //initData(data);
-
-
-//                String received
-//                        = new String(packet.getData(), 0, packet.getLength());
-
-
-//                if (received.equals("end")) {
-//                    running = false;
-//                    continue;
-//                }
-//
-//                try {
-//                    socket.send(packet);
-//                } catch (Exception e){
-//                    e.printStackTrace();
-//                }
+            //notify we have received data from observer
             observer.update();
         }
         socket.close();
@@ -92,9 +67,12 @@ public class MotionControllerChannel extends Thread {
 //37 kP Roll
 //45 kI Roll
 //53 kD Roll
+    //DAC CG changes range of voltages the DAC can accept
+    //
+    //offset, you send a command that you want 0V, but we get 0.1V. Offset would be used to correct that.
 
 
-    public void setDisplayValues(byte[] data){
+    private void setDisplayValues(byte[] data){
         if (data == null) {
             return;
         }
@@ -103,8 +81,8 @@ public class MotionControllerChannel extends Thread {
                 Utils.map((long)getShort(data, 2), 0, 12600L,0, 360),
                 Utils.map((long)getShort(data, 4),0, 8640L,0, 360),
                 Utils.map((long)getShort(data, 6), 0, 8640L,0, 360),
-                getShort(data, 8),
-                getShort(data, 10),
+                Utils.map((long)getShort(data, 8), Integer.MIN_VALUE, Integer.MAX_VALUE, -10, 10),
+                Utils.map((long)getShort(data, 10), Integer.MIN_VALUE, Integer.MAX_VALUE, -10, 10),
                 getByte(data, 12),
                 getDouble(data, 21),
                 getDouble(data, 29),
@@ -114,32 +92,24 @@ public class MotionControllerChannel extends Thread {
         };
     }
 
-    public double[] getDisplayValues(){
+    double[] getDisplayValues(){
         return displayValues;
     }
 
-    public void setObserver(CustomObserver observer){
+    void setObserver(CustomObserver observer){
         this.observer = observer;
     }
 
-    public void sendCommand(char c){
+    void sendCommand(char c){
         sendCommand(new byte[]{(byte)c});
     }
 
-    public void sendCommand(double[] cmdVals, char cmd){
+    void sendCommand(double[] cmdVals, char cmd){
         byte[] array = writeToByteArray(cmd, cmdVals);
         sendCommand(array);
     }
 
-    public void sendCommand(byte[] cmdVals) {
-//        if (socket == null) {
-//            controller.relayErrorToView("Can't connect to controller.");
-//            return;
-//        }
-//        if (!socket.isConnected()){
-//            controller.relayErrorToView("Can't connect to controller.");
-//            return;
-//        }
+    void sendCommand(byte[] cmdVals) {
         try {
             InetAddress address = InetAddress.getByName("192.168.1.6");
             DatagramPacket packet = new DatagramPacket(cmdVals, cmdVals.length, address, 8888);
@@ -156,12 +126,6 @@ public class MotionControllerChannel extends Thread {
         byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
         byteBuffer.putDouble(d);
         return byteBuffer.array();
-//        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//        DataOutputStream dos = new DataOutputStream(bos);
-//        try {
-//            dos.writeDouble(d);
-//            dos.flush(); } catch (IOException e) { e.printStackTrace(); }
-//        return bos.toByteArray();
     }
 
     private byte[] writeToByteArray(char cmd, double[] cmdVals){
@@ -175,23 +139,6 @@ public class MotionControllerChannel extends Thread {
         }
         return array;
     }
-
-    public void onValuesUpdated(double[] values){
-        //channel.sendUpdatedValues(displayValues);
-    }
-
-    private void convertToByteArray(double[] values){
-
-    }
-
-//    private byte[] convertDoubleToByteArray(double value){
-//        byte[] output = new byte[8];
-//        long lng = Double.doubleToLongBits(value);
-//        for(int i = 0; i < 8; i++){
-//            output[i] = (byte)((lng >> ((7 - i) * 8)) & 0xff);
-//        }
-//        return output;
-//    }
 
     private double getByte(byte[] data, int offset) {
         return (double) (ByteBuffer.wrap(data, offset, 2).order(ByteOrder.LITTLE_ENDIAN).getShort() & 0xff);

@@ -1,5 +1,8 @@
-package sample;
+package data;
 
+
+import ui.MainViewController;
+import util.CustomObserver;
 
 public class DataChannel extends CustomObserver {
 
@@ -15,7 +18,7 @@ public class DataChannel extends CustomObserver {
 
     @Override
     public void update() {
-        viewController.updateValues(mcChannel.getDisplayValues());
+        viewController.updateView(mcChannel.getDisplayValues());
     }
 
     public void sendCommand(double[] values, char cmd){

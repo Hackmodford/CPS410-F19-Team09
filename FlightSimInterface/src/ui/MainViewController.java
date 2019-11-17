@@ -1,6 +1,5 @@
-package sample;
+package ui;
 
-import com.sun.tools.internal.jxc.ap.Const;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -11,69 +10,37 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import util.Constants;
+import data.DataChannel;
+import util.Utils;
+
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 public class MainViewController extends Application {
-
-    /*
-    //Values to display
-    set pvalue (double p, double i, double d)
-    current pvalue (double p, double i, double d)
-    set rvalue (double p, double i, double d)
-    current rvalue (double p, double i, double d)
-    voltage [-10, 10]
-
-    //values we want manipulate
-    pvalue (double p, double i, double d) voltage
-    rvalue (double p, double i, double d) voltage
-    DAC (on four channels: Pitch - A, Roll - B, Height - C, Balance? - D)
-            -pick a channel, and send following values (byte)
-            -course gain
-                • byte
-            -fine gain
-                • signed char -> 6-bit in B's program
-                • -32 LSBs -> 31 LSBs
-            -offset
-                • -16 LSBs -> 15.875 LSBs
-
-        CMD =
-    X-- set pvalue
-    X-- set rvalue
-    Course gain
-
-     */
 
     @FXML public TextField field1;
     @FXML public TextField field2;
     @FXML public TextField field3;
-
     @FXML public MenuItem cmdSetPitchPid;
     @FXML public MenuItem cmdSetRollPid;
     @FXML public MenuItem cmdSetPoints;
     @FXML public MenuItem cmdDacCourseGain;
     @FXML public MenuItem cmdDacFineGain;
     @FXML public MenuItem cmdDacOffset;
-
     @FXML public MenuButton commandMenu;
-
     @FXML public Button btnSubmit;
     @FXML public Button btnStart;
-
     @FXML public Label errorLabel;
     @FXML public Label statusLabel;
     @FXML public Label txtSetPointPitch;
     @FXML public Label txtSetPointRoll;
     @FXML public Label txtVoltagePitch;
     @FXML public Label txtVoltageRoll;
-
     @FXML public ImageView imgDialPitch;
     @FXML public ImageView imgDialRoll;
 
     private TextField[] fields;
-
     private DataChannel channel;
-    private MainModel model;
 
     private char command;
 
@@ -81,29 +48,14 @@ public class MainViewController extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setScene(new Scene(root, 800, 500));
+        primaryStage.setScene(new Scene(root, 1000, 500));
         primaryStage.show();
     }
 
     @FXML
     public void initialize(){
-        initElementsIfNeeded();
-    }
-
-    @Override
-    public void init() throws Exception {
-        super.init();
-    }
-
-    @Override
-    public void stop() throws Exception {
-        super.stop();
-    }
-
-    public void initElementsIfNeeded(){
-        if (channel == null) channel = new DataChannel(this);
-        if (model == null) model = new MainModel();
-        if (fields == null) fields = new TextField[]{field1, field2, field3};
+        channel = new DataChannel(this);
+        fields = new TextField[]{field1, field2, field3};
     }
 
     //byte legend
@@ -120,15 +72,16 @@ public class MainViewController extends Application {
 //10 kP Roll
 //11 kI Roll
 //12 kD Roll
-    public void updateValues(double[] values){
+
+    public void updateView(double[] values){
         Double pSetPoint =  values[0],
                 pValue =  values[1],
                 rSetPoint = values[2],
                 rValue = values[3],
                 pPwm = values[4],
                 rPwm = values[5],
-                state = values[6],
-                kpPitch = values[7],
+                state = values[6];
+        double kpPitch = values[7],
                 kiPitch = values[8],
                 kdPitch = values[9],
                 kpRoll = values[10],
@@ -198,13 +151,14 @@ public class MainViewController extends Application {
     }
 
     private boolean inputIsValidFor(TextField tf){
-
         double value;
+
         try {
             value = Double.parseDouble(tf.getText());
         } catch (Exception e){
             return false;
         }
+
         if (command == Constants.ROLL || command == Constants.PITCH) {
             return value >= 0.0;
         } else if (command == Constants.MOVE) {
@@ -233,9 +187,10 @@ public class MainViewController extends Application {
         int rollDegree = Integer.parseInt(field2.getText());
         long pitchMappedVal = Utils.map(pitchDegree, 0, 360, 0, 4294967295L);
         long rollMappedVal = Utils.map(rollDegree, 0, 360, 0, 4294967295L);
-
         byte[] bytes = new byte[9];
+
         bytes[0] = (byte)command;
+
         //Not using Little Endian in order to mimic behavior of SimTools.
         byte[] a1 =
                 ByteBuffer.allocate(8).putLong(pitchMappedVal).array();
@@ -243,12 +198,7 @@ public class MainViewController extends Application {
                 ByteBuffer.allocate(8).putLong(rollMappedVal).array();
         System.arraycopy(a1, 4, bytes, 1, 4);
         System.arraycopy(a2, 4, bytes, 5, 4);
-//        for (int i = 0; i < a1.length; i++){
-//            bytes[i+1] = a1[i];
-//        }
-//        for (int i = 0; i < a2.length; i++){
-//            bytes[i+1+a1.length] = a2[i];
-//        }
+
         return bytes;
     }
 

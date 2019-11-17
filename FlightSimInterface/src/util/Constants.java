@@ -1,4 +1,4 @@
-package sample;
+package util;
 
 public class Constants {
     public static final int CHANNEL_A = 0;
