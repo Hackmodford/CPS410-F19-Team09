@@ -2,18 +2,19 @@ package data;
 
 
 import ui.MainViewController;
-import util.CustomObserver;
+import util.Observer;
 
-public class DataChannel extends CustomObserver {
+public class DataChannel extends Observer {
 
     private MotionControllerChannel mcChannel;
     private MainViewController viewController;
+    private static DataChannel instance;
 
-    public DataChannel(MainViewController viewController){
-        mcChannel = new MotionControllerChannel(this);
+    private DataChannel(){
+        mcChannel = MotionControllerChannel.getInstance();
+        viewController = MainViewController.getInstance();
         mcChannel.setObserver(this);
-        this.viewController = viewController;
-        mcChannel.start();
+        if (!mcChannel.isAlive()) mcChannel.start();
     }
 
     @Override
@@ -39,6 +40,11 @@ public class DataChannel extends CustomObserver {
 
     public void relaySuccessToView(){
         viewController.showCommandSentMessage();
+    }
+
+    public static DataChannel getInstance(){
+        if (instance == null) instance = new DataChannel();
+        return instance;
     }
 
 }

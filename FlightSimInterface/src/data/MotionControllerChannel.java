@@ -1,8 +1,9 @@
 package data;
 
-import util.CustomObserver;
+import util.Observer;
 import util.Utils;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -11,18 +12,23 @@ import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import static util.Utils.*;
+
 public class MotionControllerChannel extends Thread {
 
+    private DataChannel dataChannel;
+    private Observer observer;
     private DatagramSocket socket;
-    private boolean running;
-    private byte[] buf = new byte[256];
+    private static MotionControllerChannel instance;
+
     private byte[] data;
-    private DataChannel controller;
-    private CustomObserver observer;
+    private byte[] buf = new byte[256];
     private double[] displayValues;
 
-    public MotionControllerChannel(DataChannel controller) {
-        this.controller = controller;
+    private boolean running;
+
+
+    private MotionControllerChannel() {
         try {
             socket = new DatagramSocket(8888);
         } catch (SocketException e) {
@@ -31,6 +37,7 @@ public class MotionControllerChannel extends Thread {
     }
 
     public void run() {
+        dataChannel = DataChannel.getInstance();
         running = true;
         while (running) {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
@@ -44,10 +51,11 @@ public class MotionControllerChannel extends Thread {
             InetAddress address = packet.getAddress();
             int port = packet.getPort();
             packet = new DatagramPacket(buf, buf.length, address, port);
-            data = packet.getData();
-            setDisplayValues(data);
+            extractDataFromUDPPacket(packet);
+//            data = packet.getData();
+//            extractDataFromUDPPacket(data);
 
-            //notify we have received data from observer
+            //notify the data channel we have received data from motion dataChannel
             observer.update();
         }
         socket.close();
@@ -72,23 +80,26 @@ public class MotionControllerChannel extends Thread {
     //offset, you send a command that you want 0V, but we get 0.1V. Offset would be used to correct that.
 
 
-    private void setDisplayValues(byte[] data){
+    private void extractDataFromUDPPacket(DatagramPacket packet){
+        data = packet.getData();
         if (data == null) {
             return;
         }
         this.displayValues = new double[] {
-                Utils.map((long)getShort(data, 0),0, 12600L,0, 360),
-                Utils.map((long)getShort(data, 2), 0, 12600L,0, 360),
-                Utils.map((long)getShort(data, 4),0, 8640L,0, 360),
-                Utils.map((long)getShort(data, 6), 0, 8640L,0, 360),
-                Utils.map((long)getShort(data, 8), Integer.MIN_VALUE, Integer.MAX_VALUE, -10, 10),
-                Utils.map((long)getShort(data, 10), Integer.MIN_VALUE, Integer.MAX_VALUE, -10, 10),
+                map((long)getShort(data, 0),0, 12600L,0, 360),
+                map((long)getShort(data, 2), 0, 12600L,0, 360),
+                map((long)getShort(data, 4),0, 8640L,0, 360),
+                map((long)getShort(data, 6), 0, 8640L,0, 360),
+                map((long)getShort(data, 8), Integer.MIN_VALUE, Integer.MAX_VALUE, -10, 10),
+                map((long)getShort(data, 10), Integer.MIN_VALUE, Integer.MAX_VALUE, -10, 10),
                 getByte(data, 12),
                 getDouble(data, 21),
                 getDouble(data, 29),
                 getDouble(data, 37),
                 getDouble(data, 45),
-                getDouble(data, 53)
+                getDouble(data, 53),
+                getByte(data, 61),
+                getByte(data, 62)
         };
     }
 
@@ -96,7 +107,7 @@ public class MotionControllerChannel extends Thread {
         return displayValues;
     }
 
-    void setObserver(CustomObserver observer){
+    void setObserver(Observer observer){
         this.observer = observer;
     }
 
@@ -118,41 +129,15 @@ public class MotionControllerChannel extends Thread {
             e.printStackTrace();
             return;
         }
-        controller.relaySuccessToView();
+        dataChannel.relaySuccessToView();
     }
 
-    private byte[] convertDoubleToByteArray(double d) {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(Double.BYTES);
-        byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
-        byteBuffer.putDouble(d);
-        return byteBuffer.array();
-    }
-
-    private byte[] writeToByteArray(char cmd, double[] cmdVals){
-        byte[] array = new byte[25];
-        array[0] = (byte)cmd;
-        for (int i = 0; i < cmdVals.length; i++){
-            byte[] bytes = convertDoubleToByteArray(cmdVals[i]);
-            for (int j = 0; j < bytes.length; j++){
-                array[i*8 + j + 1] = bytes[j];
-            }
+    public static MotionControllerChannel getInstance(){
+        if (instance == null) {
+            instance = new MotionControllerChannel();
+            return instance;
         }
-        return array;
+        return instance;
     }
 
-    private double getByte(byte[] data, int offset) {
-        return (double) (ByteBuffer.wrap(data, offset, 2).order(ByteOrder.LITTLE_ENDIAN).getShort() & 0xff);
-    }
-
-    private double getShort(byte[] data, int offset) {
-        return (double) ByteBuffer.wrap(data, offset, 2).order(ByteOrder.LITTLE_ENDIAN).getShort();
-    }
-
-    private double getInt(byte[] data, int offset) {
-        return (double) ByteBuffer.wrap(data, offset, 4).order(ByteOrder.LITTLE_ENDIAN).getInt();
-    }
-
-    private double getDouble(byte[] data, int offset) {
-        return ByteBuffer.wrap(data, offset, 8).order(ByteOrder.LITTLE_ENDIAN).getDouble();
-    }
 }

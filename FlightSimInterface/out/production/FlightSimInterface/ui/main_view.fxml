@@ -94,8 +94,11 @@
                      <children>
                         <ImageView fx:id="imgDialPitch" fitHeight="450.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                            <image>
-                              <Image url="@../assets/360dial.png" />
+                              <Image url="@../assets/360dial_1.png" />
                            </image>
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
                         </ImageView>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                            <image>
@@ -213,8 +216,11 @@
                      <children>
                         <ImageView fx:id="imgDialRoll" fitHeight="450.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                            <image>
-                              <Image url="@../assets/360dial.png" />
+                              <Image url="@../assets/360dial_1.png" />
                            </image>
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
                         </ImageView>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                            <image>
@@ -377,7 +383,7 @@
                    <Button fx:id="btnConfig" onMouseClicked="#startSim" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: green; -fx-text-fill: white; -fx-border-radius: 10; -fx-background-radius: 10; -fx-border-width: 2; -fx-border-color: black; -fx-font-size: 20;" text="Start" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                    <Button fx:id="btnStart" onMouseClicked="#endSim" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: orange; -fx-border-width: 2; -fx-border-color: black; -fx-font-size: 20; -fx-border-radius: 10; -fx-background-radius: 10;" text="Stop" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                   <Button fx:id="emergencyStop" mnemonicParsing="false" onMouseClicked="#emergencyStop" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: red; -fx-border-color: black; -fx-border-width: 2; -fx-font-size: 20; -fx-background-radius: 10; -fx-border-radius: 10;" text="E-STOP" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <Label text="00:00:00" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER">
+                  <Label text="00:00" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER">
                      <font>
                         <Font size="36.0" />
                      </font>
@@ -401,7 +407,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="statusLabel" text="&lt;~&gt;" textFill="WHITE" GridPane.columnIndex="1">
+                  <Label fx:id="statusLabel" text="Stopped" textFill="WHITE" GridPane.columnIndex="1">
                      <font>
                         <Font size="18.0" />
                      </font>
