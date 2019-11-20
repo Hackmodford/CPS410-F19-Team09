@@ -1,0 +1,25 @@
+﻿<Properties StartupConfiguration="{64F4E834-2326-49F8-B12E-1C6A6EB3DF40}|Default">
+  <MonoDevelop.Ide.ItemProperties.UDPSender FirstBuild="True" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="UDPSender/Program.cs">
+    <Files>
+      <File FileName="UDPSender/Program.cs" Line="231" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="UDPSender" expanded="True">
+            <Node name="UDPSender" expanded="True">
+              <Node name="Program.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

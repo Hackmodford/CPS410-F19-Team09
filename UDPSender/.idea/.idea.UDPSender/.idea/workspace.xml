@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e09a8274-17d9-4358-92a3-9d2c38064043" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UDPSender.sln" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UDPSender/Program.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UDPSender/UDPSender.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UDPSender/View/MainWindow.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UDPSender/ViewModel/MainWindowViewModel.cs" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/DF403C24-BBBF-4039-9DF9-532B28806EF2/32/IReactiveObjectExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E11FAD2A-CB7B-41AB-A21E-FD717818DA87/41/0c736625/Window.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E11FAD2A-CB7B-41AB-A21E-FD717818DA87/ec/6c67774c/Label.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7CBDEEF5-B707-43AA-B55B-7CF4A50CA480/64/db18465b/Socket.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E11FAD2A-CB7B-41AB-A21E-FD717818DA87/d8/53b6fe7e/View.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/DF403C24-BBBF-4039-9DF9-532B28806EF2/e4/fb82422c/IActivationForViewFetcher.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/DF403C24-BBBF-4039-9DF9-532B28806EF2/50/459e734f/IViewFor`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/F9E20909-5F5A-4628-A0B7-A00D8A83C3B9/33/BehaviorSubject.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/DF403C24-BBBF-4039-9DF9-532B28806EF2/12/PropertyBindingMixins.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E11FAD2A-CB7B-41AB-A21E-FD717818DA87/c7/c9685cbd/Colors.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E11FAD2A-CB7B-41AB-A21E-FD717818DA87/59/7c1ae763/Application.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/Desktop/Weather/Weather/Weather.iOS/Views/MainViewController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/F9E20909-5F5A-4628-A0B7-A00D8A83C3B9/35/ReplaySubject.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E11FAD2A-CB7B-41AB-A21E-FD717818DA87/ed/19842f42/Pos.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/UDPSender/ViewModel/MainWindowViewModel.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E11FAD2A-CB7B-41AB-A21E-FD717818DA87/1d/88b7c446/Toplevel.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/UDPSender/View/MainWindow.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/UDPSender/Program.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/UDPSender/MainView.cs" />
+        <option value="$PROJECT_DIR$/UDPSender/Model/MainView.cs" />
+        <option value="$PROJECT_DIR$/UDPSender/ViewModel/MainViewModel.cs" />
+        <option value="$PROJECT_DIR$/UDPSender/BaseTextField.cs" />
+        <option value="$PROJECT_DIR$/UDPSender/ReactiveTextField.cs" />
+        <option value="$PROJECT_DIR$/UDPSender/Program.cs" />
+        <option value="$PROJECT_DIR$/UDPSender/View/MainWindow.cs" />
+        <option value="$PROJECT_DIR$/UDPSender/ViewModel/MainWindowViewModel.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1R1Krg9FjLpRKDKtAW5QliQhqbq" />
+  <component name="PropertiesComponent">
+    <property name="Rider.DefaultBreakpoints.AreToggled" value="true" />
+    <property name="Rider.ProjectViewActivator.IsNotFirstRun" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected=".NET Project.External">
+    <configuration name="Default" type="DotNetProject" factoryName=".NET Project">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/UDPSender/bin/Debug/netcoreapp2.2/UDPSender.dll" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/UDPSender/bin/Debug/netcoreapp2.2" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/UDPSender/UDPSender.csproj" />
+      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
+      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
+      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
+      <option name="PROJECT_KIND" value="DotNetCore" />
+      <option name="PROJECT_TFM" value=".NETCoreApp,Version=v2.2" />
+      <method v="2">
+        <option name="Build" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="External" type="DotNetProject" factoryName=".NET Project">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/UDPSender/bin/Debug/netcoreapp2.2/UDPSender.dll" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/UDPSender/bin/Debug/netcoreapp2.2" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="1" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/UDPSender/UDPSender.csproj" />
+      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
+      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
+      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
+      <option name="PROJECT_KIND" value="DotNetCore" />
+      <option name="PROJECT_TFM" value=".NETCoreApp,Version=v2.2" />
+      <method v="2">
+        <option name="Build" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue=".NET Project.Default" />
+      <item itemvalue=".NET Project.External" />
+    </list>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e09a8274-17d9-4358-92a3-9d2c38064043" name="Default Changelist" comment="" />
+      <created>1568829362248</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1568829362248</updated>
+      <workItem from="1568829365246" duration="2645000" />
+      <workItem from="1568837096196" duration="1125000" />
+      <workItem from="1568851186906" duration="11608000" />
+      <workItem from="1568916020398" duration="4050000" />
+      <workItem from="1568993195085" duration="46000" />
+      <workItem from="1569436331695" duration="614000" />
+      <workItem from="1570113146673" duration="698000" />
+      <workItem from="1570114028111" duration="1129000" />
+      <workItem from="1573162310133" duration="1160000" />
+      <workItem from="1573680266290" duration="190000" />
+      <workItem from="1573748551964" duration="41000" />
+      <workItem from="1574103143006" duration="116000" />
+      <workItem from="1574191882793" duration="78000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" suspend="NONE" type="DotNet Exception Breakpoints">
+          <properties exception="System.Threading.ThreadAbortException" displayValue="System.Threading.ThreadAbortException" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <breakpoint type="DotNet Exception Breakpoints">
+          <properties exception="System.Net.Sockets.SocketException" displayValue="System.Net.Sockets.SocketException" />
+          <option name="timeStamp" value="6" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
