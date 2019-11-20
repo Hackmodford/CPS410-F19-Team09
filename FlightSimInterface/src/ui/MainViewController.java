@@ -165,22 +165,22 @@ public class MainViewController extends Application {
      */
     private void setSimulatorState(int state) {
         switch (state){
-            case 0:
+            case Constants.STATE_STOPPED:
                 statusLabel.setText("Stopped");
                 break;
-            case 1:
+            case Constants.STATE_STARTING:
                 statusLabel.setText("Starting");
                 break;
-            case 2:
+            case Constants.STATE_RUNNING:
                 statusLabel.setText("Running");
                 break;
-            case 3:
+            case Constants.STATE_ENDING:
                 statusLabel.setText("Ending");
                 break;
-            case 4:
+            case Constants.STATE_MANUAL:
                 statusLabel.setText("Manual");
                 break;
-            case 99:
+            case Constants.STATE_EMERGENCY_STOP:
                 statusLabel.setText("Emergency Stop");
                 break;
         }
@@ -293,8 +293,12 @@ public class MainViewController extends Application {
     }
 
     /**
-     *
-     * @return
+     * Builds a command consisting of:
+     *      [0]: char currentCommand
+     *      [1..4]: pitch degree mapped to byte[]
+     *      [5..8]: roll degree mapped to byte[]
+     * To match set-point command.
+     * @return constructed byte[] command
      */
     private byte[] buildSetPointsCmd(){
         int pitchDegree = Integer.parseInt(field1.getText());
@@ -315,8 +319,13 @@ public class MainViewController extends Application {
     }
 
     /**
+     * Builds a command consisting of:
+     *      [char currentCommand]
+     *      [byte channel]
+     *      [byte value]
+     * To match any DAC-related command.
      *
-     * @return
+     * @return the constructed byte[] command
      */
     private byte[] buildDacCmd(){
         return new byte[]{ (byte) currentCommand,
@@ -325,7 +334,9 @@ public class MainViewController extends Application {
     }
 
     /**
-     *
+     * Using the same view as an error, "Command sent" is displayed
+     * to show that a command was correctly sent. Shows as black text
+     * to distinguish from an error.
      */
     public void showCommandSentMessage(){
         errorLabel.setText("Command sent.");
@@ -334,7 +345,8 @@ public class MainViewController extends Application {
     }
 
     /**
-     *
+     * Based on the current command, decides which message we want to show as
+     * an error and shows the error view with the text shown as a red color.
      */
     private void showError(){
         String error;
@@ -361,8 +373,10 @@ public class MainViewController extends Application {
     }
 
     /**
+     * Displays the error view with the given text. Sets it's text
+     * color to red.
      *
-     * @param error
+     * @param error string we want to display as an error
      */
     public void showError(String error) {
         errorLabel.setText(error);
@@ -371,28 +385,32 @@ public class MainViewController extends Application {
     }
 
     /**
-     *
+     * Sends a direct command to the motion controller as a
+     * single char. 'S' in this case to represent START
      */
     public void startSim(){
         channel.sendCommand(Constants.START);
     }
 
     /**
-     *
+     * Sends a direct command to the motion controller as a
+     * single char. 'E' in this case to represent END
      */
     public void endSim(){
         channel.sendCommand(Constants.END);
     }
 
     /**
-     *
+     * Sends a direct command to the motion controller as a
+     * single char. '0' in this case to represent E-STOP
      */
     public void emergencyStop(){
         channel.sendCommand(Constants.EMERGENCY_STOP);
     }
 
     /**
-     *
+     * Sets the current command as Roll PID, updates TextFields accordingly
+     * with appropriate hint texts.
      */
     public void setCmdPitch(){
         currentCommand = Constants.PITCH;
@@ -402,7 +420,8 @@ public class MainViewController extends Application {
     }
 
     /**
-     *
+     * Sets the current command as Roll PID, updates TextFields accordingly
+     * with appropriate hint texts.
      */
     public void setCmdRoll(){
         currentCommand = Constants.ROLL;
@@ -412,7 +431,8 @@ public class MainViewController extends Application {
     }
 
     /**
-     *
+     * Sets the current command as Pitch and Roll Set-points, updates TextFields accordingly
+     * with appropriate hint texts.
      */
     public void setCmdSetPoints(){
         currentCommand = Constants.MOVE;
@@ -421,7 +441,8 @@ public class MainViewController extends Application {
     }
 
     /**
-     *
+     * Sets the current command as DAC Course Gain, updates TextFields accordingly
+     * with appropriate hint texts.
      */
     public void setCmdDacCourseGain(){
         currentCommand = Constants.DAC_CG;
@@ -430,7 +451,8 @@ public class MainViewController extends Application {
     }
 
     /**
-     *
+     * Sets the current command as DAC Fine Gain, updates TextFields accordingly
+     * with appropriate hint texts.
      */
     public void setCmdDacFineGain(){
         currentCommand = Constants.DAC_FG;
@@ -439,7 +461,8 @@ public class MainViewController extends Application {
     }
 
     /**
-     *
+     * Sets the current command as DAC offset, updates TextFields accordingly
+     * with appropriate hint texts.
      */
     public void setCmdDacOffset(){
         currentCommand = Constants.DAC_OFFSET;
@@ -448,10 +471,13 @@ public class MainViewController extends Application {
     }
 
     /**
+     * Upon selection of a PID command for pitch or roll, the current
+     * values are placed in the TextFields because those values aren't
+     * available in the view
      *
-     * @param v1
-     * @param v2
-     * @param v3
+     * @param v1 p-value
+     * @param v2 i-value
+     * @param v3 d-value
      */
     private void setFieldTexts(double v1, double v2, double v3){
         field1.setText(Double.toString(v1));
@@ -460,9 +486,12 @@ public class MainViewController extends Application {
     }
 
     /**
+     * Sets the hint text for field1 and field2 in the command board, hiding
+     * field3 because a hint wasn't passed in for it. Error label is hidden
+     * and the submit button becomes visible.
      *
-     * @param prompt1
-     * @param prompt2
+     * @param prompt1 hint text for field1
+     * @param prompt2 hint text for field2
      */
     private void setFieldProperties(String prompt1, String prompt2){
         errorLabel.setVisible(false);
@@ -476,10 +505,12 @@ public class MainViewController extends Application {
     }
 
     /**
+     * Sets hint text for all fields in the command board and makes them visible.
+     * Error label is hidden and the submit button becomes visible.
      *
-     * @param prompt1
-     * @param prompt2
-     * @param prompt3
+     * @param prompt1 hint text for field1
+     * @param prompt2 hint text for field2
+     * @param prompt3 hint text for field3
      */
     private void setFieldProperties(String prompt1, String prompt2, String prompt3){
         errorLabel.setVisible(false);
@@ -493,8 +524,9 @@ public class MainViewController extends Application {
     }
 
     /**
+     * Singleton method
      *
-     * @return
+     * @return reference to the instance of the view
      */
     public static MainViewController getInstance(){
         return instance; //this will never be null
