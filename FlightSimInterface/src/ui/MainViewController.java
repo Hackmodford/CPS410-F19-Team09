@@ -13,9 +13,10 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import util.Constants;
 import data.DataChannel;
-import util.Utils;
 
 import java.nio.ByteBuffer;
+
+import static util.Utils.map;
 
 public class MainViewController extends Application {
 
@@ -51,6 +52,9 @@ public class MainViewController extends Application {
     @FXML public ImageView outPressure;
     @FXML public ImageView outPitchDisable;
 
+    private final String layoutFile = "main_view.fxml";
+    private final String switchOn = "assets/switch_on.png";
+    private final String switchOff = "assets/switch_off.png";
 
     private static MainViewController instance;
 
@@ -58,9 +62,6 @@ public class MainViewController extends Application {
     private DataChannel channel;
     private double[] pidValues;
 
-    private final String layoutFile = "main_view.fxml";
-    private final String switchOn = "../assets/switch_on.png";
-    private final String switchOff = "../assets/switch_off.png";
     private char currentCommand;
 
 
@@ -77,7 +78,6 @@ public class MainViewController extends Application {
         instance = this;
         channel = DataChannel.getInstance();
         cmdFields = new TextField[]{field1, field2, field3};
-        System.out.println(inTopLeft.getImage());
     }
 
     /**
@@ -109,7 +109,8 @@ public class MainViewController extends Application {
                 rVoltage =      values[5],
                 state =         values[6];
 
-        pidValues = new double[]{values[7], values[8], values[9],
+        pidValues = new double[]{
+                values[7], values[8], values[9],
                 values[10], values[11], values[12]};
 
         boolean[] ins = extractStatus((byte)values[13]);
@@ -143,18 +144,18 @@ public class MainViewController extends Application {
      */
     private void setSwitchesStates(boolean[] ins, boolean[] outs){
         inTopLeft.setImage(         new Image(ins[0] ? switchOn : switchOff));
-        inTopRight.setImage(        new Image(ins[0] ? switchOn : switchOff));
-        inBottom.setImage(          new Image(ins[0] ? switchOn : switchOff));
-        inPitchHome.setImage(       new Image(ins[0] ? switchOn : switchOff));
-        inCanopy.setImage(          new Image(ins[0] ? switchOn : switchOff));
-        inStop.setImage(            new Image(ins[0] ? switchOn : switchOff));
+        inTopRight.setImage(        new Image(ins[1] ? switchOn : switchOff));
+        inBottom.setImage(          new Image(ins[2] ? switchOn : switchOff));
+        inPitchHome.setImage(       new Image(ins[3] ? switchOn : switchOff));
+        inCanopy.setImage(          new Image(ins[4] ? switchOn : switchOff));
+        inStop.setImage(            new Image(ins[5] ? switchOn : switchOff));
 
         outRaise.setImage(          new Image(outs[0] ? switchOn : switchOff));
-        outLower.setImage(          new Image(outs[0] ? switchOn : switchOff));
-        outCWPlus.setImage(         new Image(outs[0] ? switchOn : switchOff));
-        outCWMinus.setImage(        new Image(outs[0] ? switchOn : switchOff));
-        outPressure.setImage(       new Image(outs[0] ? switchOn : switchOff));
-        outPitchDisable.setImage(   new Image(outs[0] ? switchOn : switchOff));
+        outLower.setImage(          new Image(outs[1] ? switchOn : switchOff));
+        outCWPlus.setImage(         new Image(outs[2] ? switchOn : switchOff));
+        outCWMinus.setImage(        new Image(outs[3] ? switchOn : switchOff));
+        outPressure.setImage(       new Image(outs[4] ? switchOn : switchOff));
+        outPitchDisable.setImage(   new Image(outs[5] ? switchOn : switchOff));
     }
 
     /**
@@ -245,9 +246,11 @@ public class MainViewController extends Application {
 
 
     /**
+     * Given a TextField, if the value within it is parsable to double,
+     * we check if it's in the correct range compared to the currentCommand.
      *
-     * @param tf
-     * @return
+     * @param tf TextField we are checking
+     * @return true if input is valid, false otherwise
      */
     private boolean inputIsValidFor(TextField tf){
         double value;
@@ -262,8 +265,7 @@ public class MainViewController extends Application {
         //Based on the command, we assure the value is within the corresponding range
         if (currentCommand == Constants.PITCH){
             return value <= 12600 && value >= 0;
-        }
-        else if (currentCommand == Constants.ROLL) {
+        } else if (currentCommand == Constants.ROLL) {
             return value <= 8640 && value >= 0;
         } else if (currentCommand == Constants.MOVE) {
             return value <= 360 && value >= 0;
@@ -276,48 +278,64 @@ public class MainViewController extends Application {
         }
     }
 
-    //Size of currentCommand is 4 bytes
+    /**
+     * Builds double array from values in TextFields. It is assumed
+     * that the fields have already passed a validity check.
+     *
+     * @return values in fields in a double array of length 3
+     */
     private double[] buildPidCmd(){
         double[] d =  new double[]{
                 Double.parseDouble(field1.getText()),
                 Double.parseDouble(field2.getText()),
                 Double.parseDouble(field3.getText())};
-        System.out.println(String.format("P: %s, I: %s, D: %s", d[0], d[1], d[2]));
         return d;
     }
 
+    /**
+     *
+     * @return
+     */
     private byte[] buildSetPointsCmd(){
         int pitchDegree = Integer.parseInt(field1.getText());
         int rollDegree = Integer.parseInt(field2.getText());
-        long pitchMappedVal = Utils.map(pitchDegree, 0, 360, 0, 4294967295L);
-        long rollMappedVal = Utils.map(rollDegree, 0, 360, 0, 4294967295L);
+        long pitchMappedVal = map(pitchDegree, 0, 360, 0, 4294967295L);
+        long rollMappedVal = map(rollDegree, 0, 360, 0, 4294967295L);
         byte[] bytes = new byte[9];
 
         bytes[0] = (byte) currentCommand;
 
         //Not using Little Endian in order to mimic behavior of SimTools.
-        byte[] a1 =
-                ByteBuffer.allocate(8).putLong(pitchMappedVal).array();
-        byte[] a2 =
-                ByteBuffer.allocate(8).putLong(rollMappedVal).array();
+        byte[] a1 = ByteBuffer.allocate(8).putLong(pitchMappedVal).array();
+        byte[] a2 = ByteBuffer.allocate(8).putLong(rollMappedVal).array();
         System.arraycopy(a1, 4, bytes, 1, 4);
         System.arraycopy(a2, 4, bytes, 5, 4);
 
         return bytes;
     }
 
+    /**
+     *
+     * @return
+     */
     private byte[] buildDacCmd(){
         return new byte[]{ (byte) currentCommand,
                 Byte.parseByte(field1.getText()),
                 Byte.parseByte(field2.getText())};
     }
 
+    /**
+     *
+     */
     public void showCommandSentMessage(){
         errorLabel.setText("Command sent.");
         errorLabel.setTextFill(Paint.valueOf("black"));
         errorLabel.setVisible(true);
     }
 
+    /**
+     *
+     */
     private void showError(){
         String error;
 
@@ -342,27 +360,40 @@ public class MainViewController extends Application {
         errorLabel.setVisible(true);
     }
 
+    /**
+     *
+     * @param error
+     */
     public void showError(String error) {
         errorLabel.setText(error);
         errorLabel.setTextFill(Paint.valueOf("red"));
         errorLabel.setVisible(true);
     }
 
-    // 'S'
+    /**
+     *
+     */
     public void startSim(){
         channel.sendCommand(Constants.START);
     }
 
-    // 'E'
+    /**
+     *
+     */
     public void endSim(){
         channel.sendCommand(Constants.END);
     }
 
-    // '0'
+    /**
+     *
+     */
     public void emergencyStop(){
         channel.sendCommand(Constants.EMERGENCY_STOP);
     }
 
+    /**
+     *
+     */
     public void setCmdPitch(){
         currentCommand = Constants.PITCH;
         setFieldProperties("P-value", "I-value", "D-value");
@@ -370,6 +401,9 @@ public class MainViewController extends Application {
         commandMenu.setText(cmdSetPitchPid.getText());
     }
 
+    /**
+     *
+     */
     public void setCmdRoll(){
         currentCommand = Constants.ROLL;
         setFieldProperties("P-value", "I-value", "D-value");
@@ -377,37 +411,59 @@ public class MainViewController extends Application {
         commandMenu.setText(cmdSetRollPid.getText());
     }
 
-
+    /**
+     *
+     */
     public void setCmdSetPoints(){
         currentCommand = Constants.MOVE;
         setFieldProperties("Pitch", "Roll");
         commandMenu.setText(cmdSetPoints.getText());
     }
 
+    /**
+     *
+     */
     public void setCmdDacCourseGain(){
         currentCommand = Constants.DAC_CG;
         setFieldProperties("Channel: 8-bit", "Course Gain: 8-bit");
         commandMenu.setText(cmdDacCourseGain.getText());
     }
 
+    /**
+     *
+     */
     public void setCmdDacFineGain(){
         currentCommand = Constants.DAC_FG;
         setFieldProperties("Channel: 8-bit", "Fine Gain: 8-bit");
         commandMenu.setText(cmdDacFineGain.getText());
     }
 
+    /**
+     *
+     */
     public void setCmdDacOffset(){
         currentCommand = Constants.DAC_OFFSET;
         setFieldProperties("Channel: 8-bit", "Offset: 8-bit");
         commandMenu.setText(cmdDacOffset.getText());
     }
 
+    /**
+     *
+     * @param v1
+     * @param v2
+     * @param v3
+     */
     private void setFieldTexts(double v1, double v2, double v3){
         field1.setText(Double.toString(v1));
         field2.setText(Double.toString(v2));
         field3.setText(Double.toString(v3));
     }
 
+    /**
+     *
+     * @param prompt1
+     * @param prompt2
+     */
     private void setFieldProperties(String prompt1, String prompt2){
         errorLabel.setVisible(false);
         field1.setPromptText(prompt1);
@@ -419,6 +475,12 @@ public class MainViewController extends Application {
         btnSubmit.setVisible(true);
     }
 
+    /**
+     *
+     * @param prompt1
+     * @param prompt2
+     * @param prompt3
+     */
     private void setFieldProperties(String prompt1, String prompt2, String prompt3){
         errorLabel.setVisible(false);
         field1.setPromptText(prompt1);
@@ -430,6 +492,10 @@ public class MainViewController extends Application {
         btnSubmit.setVisible(true);
     }
 
+    /**
+     *
+     * @return
+     */
     public static MainViewController getInstance(){
         return instance; //this will never be null
     }

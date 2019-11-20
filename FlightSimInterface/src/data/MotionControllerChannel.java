@@ -62,24 +62,22 @@ public class MotionControllerChannel extends Thread {
     }
 
     //byte legend
-//0-1 Pitch Setpoint
-//2-3 Pitch Value
-//4-5 Roll Setpoint
-//6-7 Roll Value
-//8-9 Pitch PWM
-//10-11 Roll PWM
-//12 State
-//13 kP Pitch
-//21 kI Pitch
-//29 kD Pitch
-//37 kP Roll
-//45 kI Roll
-//53 kD Roll
+
     //DAC CG changes range of voltages the DAC can accept
     //
     //offset, you send a command that you want 0V, but we get 0.1V. Offset would be used to correct that.
 
-
+    /**
+     * 0-1 Pitch Setpoint   13 kP Pitch
+     * 2-3 Pitch Value      21 kI Pitch
+     * 4-5 Roll Setpoint    29 kD Pitch
+     * 6-7 Roll Value       37 kP Roll
+     * 8-9 Pitch PWM        45 kI Roll
+     * 10-11 Roll PWM       53 kD Roll
+     * 12 State             61 inputs
+     *                      62 outputs
+     * @param packet
+     */
     private void extractDataFromUDPPacket(DatagramPacket packet){
         data = packet.getData();
         if (data == null) {
@@ -93,6 +91,7 @@ public class MotionControllerChannel extends Thread {
                 map((long)getShort(data, 8), Integer.MIN_VALUE, Integer.MAX_VALUE, -10, 10),
                 map((long)getShort(data, 10), Integer.MIN_VALUE, Integer.MAX_VALUE, -10, 10),
                 getByte(data, 12),
+                getDouble(data, 13),
                 getDouble(data, 21),
                 getDouble(data, 29),
                 getDouble(data, 37),
