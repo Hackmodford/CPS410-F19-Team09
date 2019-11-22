@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import util.Constants;
 import data.DataChannel;
 
+
 import java.nio.ByteBuffer;
 
 import static util.Utils.map;
@@ -33,6 +34,7 @@ public class MainViewController extends Application {
     @FXML public Button btnSubmit;
     @FXML public Label errorLabel;
     @FXML public Label statusLabel;
+    @FXML public Label timeLabel;
     @FXML public Label txtSetPointPitch;
     @FXML public Label txtSetPointRoll;
     @FXML public Label txtVoltagePitch;
@@ -64,6 +66,7 @@ public class MainViewController extends Application {
 
     private char currentCommand;
 
+    String currTime = "10:10";
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -100,6 +103,7 @@ public class MainViewController extends Application {
      *
      * @param values array of doubles, used to update the UI
      */
+
     public void updateView(double[] values){
         double  pSetPoint =     values[0],
                 pValue =        values[1],
@@ -132,6 +136,14 @@ public class MainViewController extends Application {
 
             setSwitchesStates(ins, outs);
             setSimulatorState((int)state);
+            //lblTest.setText(currTime);
+
+        });
+    }
+
+    public void updateTimer(String time){
+        Platform.runLater(()->{
+            timeLabel.setText(time);
         });
     }
 
@@ -390,6 +402,9 @@ public class MainViewController extends Application {
      */
     public void startSim(){
         channel.sendCommand(Constants.START);
+        timeLabel.setText("01.01");
+        ClockTimer stopwatch = new ClockTimer();
+        stopwatch.startTimer(0);
     }
 
     /**

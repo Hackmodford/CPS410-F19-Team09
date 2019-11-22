@@ -377,7 +377,7 @@
                    <Button fx:id="btnConfig" onMouseClicked="#startSim" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: green; -fx-text-fill: white; -fx-border-radius: 10; -fx-background-radius: 10; -fx-border-width: 2; -fx-border-color: black; -fx-font-size: 20;" text="Start" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                    <Button fx:id="btnStart" onMouseClicked="#endSim" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: orange; -fx-border-width: 2; -fx-border-color: black; -fx-font-size: 20; -fx-border-radius: 10; -fx-background-radius: 10;" text="Stop" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                   <Button fx:id="emergencyStop" mnemonicParsing="false" onMouseClicked="#emergencyStop" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: red; -fx-border-color: black; -fx-border-width: 2; -fx-font-size: 20; -fx-background-radius: 10; -fx-border-radius: 10;" text="E-STOP" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <Label text="00:00" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER">
+                  <Label fx:id="timeLabel" text="00:00" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER">
                      <font>
                         <Font size="36.0" />
                      </font>
