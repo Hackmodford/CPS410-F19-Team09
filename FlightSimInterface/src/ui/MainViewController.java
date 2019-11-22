@@ -65,8 +65,7 @@ public class MainViewController extends Application {
     private double[] pidValues;
 
     private char currentCommand;
-
-    String currTime = "10:10";
+    ClockTimer clock = new ClockTimer();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -402,9 +401,7 @@ public class MainViewController extends Application {
      */
     public void startSim(){
         channel.sendCommand(Constants.START);
-        timeLabel.setText("01.01");
-        ClockTimer stopwatch = new ClockTimer();
-        stopwatch.startTimer(0);
+        clock.startTimer(0);
     }
 
     /**
