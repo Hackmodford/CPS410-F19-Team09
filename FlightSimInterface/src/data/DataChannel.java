@@ -34,7 +34,7 @@ public class DataChannel extends Observer {
         mcChannel.sendCommand(c);
     }
 
-    public void relayErrorToView(String s){
+    public void relayConnectionLost(String s){
         viewController.showError(s);
     }
 

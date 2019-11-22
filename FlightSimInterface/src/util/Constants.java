@@ -21,6 +21,8 @@ public class Constants {
     //signed char
 
 
+    public static final int MAX_TIME = 5000;//360000;
+
     //states
     public static final byte STATE_STOPPED = 0;
     public static final byte STATE_STARTING = 1;

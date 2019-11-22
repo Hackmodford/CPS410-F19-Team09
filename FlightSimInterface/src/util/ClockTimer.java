@@ -1,11 +1,14 @@
-package ui;
+package util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.sun.tools.internal.jxc.ap.Const;
 import javafx.beans.property.SimpleStringProperty;
+import ui.MainViewController;
+import util.Constants;
 
 
 public class ClockTimer {
@@ -52,9 +55,10 @@ public class ClockTimer {
 
     public synchronized void updateTime() {
         this.time = this.time + 10;
+        System.out.println(time);
         splitString = timeFormat.format(new Date(this.time)).split(":");
         retTimer.set(splitString[0] + ":" + splitString[1] + ":" + (splitString[2].length() == 1 ? "0" + splitString[2] : splitString[2].substring(0, 2)));
-        view.updateTimer(this.retTimer.toString().substring(23,28));
+        view.updateTimer(this.retTimer.toString().substring(23,28), time < Constants.MAX_TIME);
     }
 
     public synchronized void moveToTime(long time) {

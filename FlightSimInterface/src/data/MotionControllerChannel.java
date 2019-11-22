@@ -38,8 +38,7 @@ public class MotionControllerChannel extends Thread {
 
     public void run() {
         dataChannel = DataChannel.getInstance();
-        running = true;
-        while (running) {
+        while (true) {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
             try {
                 socket.receive(packet);
@@ -51,13 +50,11 @@ public class MotionControllerChannel extends Thread {
             InetAddress address = packet.getAddress();
             int port = packet.getPort();
             packet = new DatagramPacket(buf, buf.length, address, port);
-            extractDataFromUDPPacket(packet);
-//            data = packet.getData();
-//            extractDataFromUDPPacket(data);
 
             //notify the data channel we have received data from motion dataChannel
             observer.update();
         }
+        dataChannel.relayConnectionLost("MotionController disconnected.");
         socket.close();
     }
 

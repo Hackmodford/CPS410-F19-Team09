@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import util.ClockTimer;
 import util.Constants;
 import data.DataChannel;
 
@@ -65,7 +66,8 @@ public class MainViewController extends Application {
     private double[] pidValues;
 
     private char currentCommand;
-    ClockTimer clock = new ClockTimer();
+    private int currentState;
+    ClockTimer clock;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -80,6 +82,7 @@ public class MainViewController extends Application {
         instance = this;
         channel = DataChannel.getInstance();
         cmdFields = new TextField[]{field1, field2, field3};
+        clock = new ClockTimer();
     }
 
     /**
@@ -140,10 +143,14 @@ public class MainViewController extends Application {
         });
     }
 
-    public void updateTimer(String time){
+    public void updateTimer(String time, boolean shouldRun){
         Platform.runLater(()->{
             timeLabel.setText(time);
         });
+        if (!shouldRun) {
+            clock.stopTimer();
+            endSim();
+        }
     }
 
     /**
@@ -172,10 +179,10 @@ public class MainViewController extends Application {
     /**
      * Given an integer value that represents the state of the simulator, the
      * statusLabel is updated accordingly.
-     * @param state int value that represents the state fo the simulator
+     * @param newState int value that represents the state fo the simulator
      */
-    private void setSimulatorState(int state) {
-        switch (state){
+    private void setSimulatorState(int newState) {
+        switch (newState){
             case Constants.STATE_STOPPED:
                 statusLabel.setText("Stopped");
                 break;
@@ -184,17 +191,21 @@ public class MainViewController extends Application {
                 break;
             case Constants.STATE_RUNNING:
                 statusLabel.setText("Running");
+                if (newState != currentState) clock.startTimer(0);
                 break;
             case Constants.STATE_ENDING:
                 statusLabel.setText("Ending");
+                if (newState != currentState) clock.stopTimer();
                 break;
             case Constants.STATE_MANUAL:
                 statusLabel.setText("Manual");
                 break;
             case Constants.STATE_EMERGENCY_STOP:
                 statusLabel.setText("Emergency Stop");
+                if (newState != currentState) clock.stopTimer();
                 break;
         }
+        currentState = newState;
     }
 
     /**
