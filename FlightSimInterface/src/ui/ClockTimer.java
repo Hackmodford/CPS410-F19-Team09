@@ -10,30 +10,31 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class ClockTimer {
 
-    private SimpleDateFormat sdf = new SimpleDateFormat("mm:ss:S");
-    private String[] split;
-    private SimpleStringProperty sspTime;
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss:S");
+    private TimerTask task;
+    private SimpleStringProperty retTimer;
     private long time;
-    private Timer t = new Timer("Metronome", true);
-    private TimerTask tt;
-    boolean timing = false;
+    private Timer xTimer = new Timer("Metronome", true);
+    private String[] splitString;
+    boolean running = false;
     private MainViewController view;
 
         public ClockTimer() {
-            sspTime = new SimpleStringProperty("00:00:00");
+            retTimer = new SimpleStringProperty("00:00:00");
             view = MainViewController.getInstance();
         }
 
+        //Threads a timer to run until running is false
         public void startTimer(final long time) {
             this.time = time;
-            timing = true;
-            tt = new TimerTask() {
+            running = true;
+            task = new TimerTask() {
 
                 @Override
                 public void run() {
-                    if (!timing) {
+                    if (!running) {
                         try {
-                            tt.cancel();
+                            task.cancel();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -42,25 +43,25 @@ public class ClockTimer {
                     }
                 }
             };
-            t.scheduleAtFixedRate(tt, 10, 10);
+            xTimer.scheduleAtFixedRate(task, 10, 10);
     }
 
     public synchronized void stopTimer() {
-        timing = false;
+        running = false;
     }
 
     public synchronized void updateTime() {
         this.time = this.time + 10;
-        split = sdf.format(new Date(this.time)).split(":");
-        sspTime.set(split[0] + ":" + split[1] + ":" + (split[2].length() == 1 ? "0" + split[2] : split[2].substring(0, 2)));
-        view.updateTimer(this.sspTime.toString().substring(23,28));
+        splitString = timeFormat.format(new Date(this.time)).split(":");
+        retTimer.set(splitString[0] + ":" + splitString[1] + ":" + (splitString[2].length() == 1 ? "0" + splitString[2] : splitString[2].substring(0, 2)));
+        view.updateTimer(this.retTimer.toString().substring(23,28));
     }
 
     public synchronized void moveToTime(long time) {
         stopTimer();
         this.time = time;
-        split = sdf.format(new Date(time)).split(":");
-        sspTime.set(split[0] + ":" + split[1] + ":" + (split[2].length() == 1 ? "0" + split[2] : split[2].substring(0, 2)));
+        splitString = timeFormat.format(new Date(time)).split(":");
+        retTimer.set(splitString[0] + ":" + splitString[1] + ":" + (splitString[2].length() == 1 ? "0" + splitString[2] : splitString[2].substring(0, 2)));
     }
 
 
