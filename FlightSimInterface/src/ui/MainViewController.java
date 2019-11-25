@@ -40,6 +40,8 @@ public class MainViewController extends Application {
     @FXML public Label txtSetPointRoll;
     @FXML public Label txtVoltagePitch;
     @FXML public Label txtVoltageRoll;
+    @FXML public Label txtPValue;
+    @FXML public Label txtRValue;
     @FXML public ImageView imgDialPitch;
     @FXML public ImageView imgDialRoll;
     @FXML public ImageView inTopLeft;
@@ -107,6 +109,9 @@ public class MainViewController extends Application {
      */
 
     public void updateView(double[] values){
+        if (values == null){
+            return;
+        }
         double  pSetPoint =     values[0],
                 pValue =        values[1],
                 rSetPoint =     values[2],
@@ -131,6 +136,10 @@ public class MainViewController extends Application {
             //update dials
             imgDialPitch.setRotate(pValue);
             imgDialRoll.setRotate(rValue);
+            txtPValue.setText(pValue + "º");
+            txtRValue.setText(rValue + "º");
+            //System.out.println(rValue);
+
 
             //update voltages
             txtVoltagePitch.setText(Double.toString(pVoltage));
@@ -138,18 +147,24 @@ public class MainViewController extends Application {
 
             setSwitchesStates(ins, outs);
             setSimulatorState((int)state);
-            //lblTest.setText(currTime);
 
         });
     }
 
+    /**
+     * Given the current time of the timer, the time label in the view is
+     * updated. The clock is killed if the timer has been exceeded max value.
+     * 
+     * @param time current time of timer in minutes:seconds (format: ##:##)
+     * @param shouldRun boolean indicating if time limit has been passed
+     */
     public void updateTimer(String time, boolean shouldRun){
         Platform.runLater(()->{
             timeLabel.setText(time);
         });
         if (!shouldRun) {
             clock.stopTimer();
-            endSim();
+            //endSim();
         }
     }
 
@@ -286,9 +301,9 @@ public class MainViewController extends Application {
 
         //Based on the command, we assure the value is within the corresponding range
         if (currentCommand == Constants.PITCH){
-            return value <= 12600 && value >= 0;
+            return value <= Constants.PITCH_RANGE && value >= 0;
         } else if (currentCommand == Constants.ROLL) {
-            return value <= 8640 && value >= 0;
+            return value <= Constants.ROLL_RANGE && value >= 0;
         } else if (currentCommand == Constants.MOVE) {
             return value <= 360 && value >= 0;
         } else if (currentCommand == Constants.DAC_OFFSET
@@ -375,9 +390,9 @@ public class MainViewController extends Application {
 
         //set error message based on what currentCommand is currently set
         if (currentCommand == Constants.PITCH) {
-            error = "Fields must have value in range [0, 12600].";
+            error = "Fields must have value in range [0, 10000].";
         } else if (currentCommand == Constants.ROLL) {
-            error = "Fields must have value in range [0, 8640]";
+            error = "Fields must have value in range [0, 52000]";
         } else if (currentCommand == Constants.MOVE) {
             error = "Fields require a positive integer in range [0, 360]";
         } else if (currentCommand == Constants.DAC_OFFSET

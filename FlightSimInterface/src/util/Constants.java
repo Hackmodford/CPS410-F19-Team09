@@ -22,6 +22,8 @@ public class Constants {
 
 
     public static final int MAX_TIME = 5000;//360000;
+    public static final long PITCH_RANGE = 10000L;
+    public static final long ROLL_RANGE = 52000L;
 
     //states
     public static final byte STATE_STOPPED = 0;

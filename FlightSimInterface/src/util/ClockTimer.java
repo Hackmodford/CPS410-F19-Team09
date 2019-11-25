@@ -55,7 +55,6 @@ public class ClockTimer {
 
     public synchronized void updateTime() {
         this.time = this.time + 10;
-        System.out.println(time);
         splitString = timeFormat.format(new Date(this.time)).split(":");
         retTimer.set(splitString[0] + ":" + splitString[1] + ":" + (splitString[2].length() == 1 ? "0" + splitString[2] : splitString[2].substring(0, 2)));
         view.updateTimer(this.retTimer.toString().substring(23,28), time < Constants.MAX_TIME);

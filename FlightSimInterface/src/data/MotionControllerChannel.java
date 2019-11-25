@@ -1,5 +1,6 @@
 package data;
 
+import util.Constants;
 import util.Observer;
 import util.Utils;
 
@@ -50,6 +51,7 @@ public class MotionControllerChannel extends Thread {
             InetAddress address = packet.getAddress();
             int port = packet.getPort();
             packet = new DatagramPacket(buf, buf.length, address, port);
+            extractDataFromUDPPacket(packet);
 
             //notify the data channel we have received data from motion dataChannel
             observer.update();
@@ -80,11 +82,13 @@ public class MotionControllerChannel extends Thread {
         if (data == null) {
             return;
         }
+
+        //System.out.println(getShort(data, 6));
         this.displayValues = new double[] {
-                map((long)getShort(data, 0),0, 12600L,0, 360),
-                map((long)getShort(data, 2), 0, 12600L,0, 360),
-                map((long)getShort(data, 4),0, 8640L,0, 360),
-                map((long)getShort(data, 6), 0, 8640L,0, 360),
+                map((long)getShort(data, 0),0, Constants.PITCH_RANGE,0, 360),
+                map((long)getShort(data, 2), 0, Constants.PITCH_RANGE,0, 360),
+                getShort(data, 4),
+                getShort(data, 6),
                 map((long)getShort(data, 8), Integer.MIN_VALUE, Integer.MAX_VALUE, -10, 10),
                 map((long)getShort(data, 10), Integer.MIN_VALUE, Integer.MAX_VALUE, -10, 10),
                 getByte(data, 12),
